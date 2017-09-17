@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Download Count</title>
+  <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
+
+
+
+<script>
+$(function() {
+  $("#loading").hide();
+  $("#alert").hide();
+  
+  $('#search').click(function() {
+    if (window.confirm("Are you sure to update the database?")) {
+      $("#search").hide();
+      $("#loading").show();
+      $("#result").text("Scanning logfiles....");
+
+
+      $.ajax('test1.php',
+        {
+          type: 'get',
+          data: '',
+          dataType: 'text',
+          timeout: 1000 * (1200 -1)
+        }
+      )
+      // 検索成功時にはページに結果を反映
+      .done(function(data) {
+        $("#loading").hide();
+        $("#result").text(data);
+        $("#alert").show();
+      })
+      // 検索失敗時には、その旨をダイアログ表示
+      .fail(function(data) {
+        $("#loading").hide();
+        $("#result").text(data);
+        window.confirm("Error!");
+      });
+
+    }
+  });
+});
+</script>
+
+</head>
+<body>
+
+<nav class="navbar navbar-toggleable-md navbar-light bg-faded">
+<button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+<span class="navbar-toggler-icon"></span>
+</button>
+<a class="navbar-brand" href="#">Download Counter</a>
+<div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+<div class="navbar-nav">
+<a class="nav-item nav-link active" href="#">Top</a>
+<a class="nav-item nav-link active" href="summary.php">Summary</a>
+<a class="nav-item nav-link" href="query.php">Query</a>
+<a class="nav-item nav-link disabled" href="#">Admin</a>
+</div>
+</div>
+</nav>
+
+<div class="container">
+    <div class="row">
+      <div class="col col-sm-1"></div>
+      
+      <div class="col col-sm-10">
+        <p><h3>Download counter for SALMON-TDDFT</h3></p>
+        
+        
+        <div class="card"><div class="card-block">
+          
+          <p>
+          <strong> This process sometimes costs a few minuites </strong>
+          </p>
+          <button class="btn btn-info" id="search">
+            Update Database
+          </button>
+          
+          <img src="loading.gif" id="loading"/>
+          <div class="alert alert-success" role="alert" id="alert">
+            <strong>Success!</strong> Update is successfully finished!
+          </div>
+          
+          <br/>
+          <pre id="result"></pre>
+        </div></div>
+        
+      </div>
+      
+      <div class="col col-sm-1"></div>
+    </div>
+</div>
+</body>
+</html>
