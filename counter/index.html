@@ -15,7 +15,8 @@
 <script>
 $(function() {
   $("#loading").hide();
-  $("#alert").hide();
+  $("#success").hide();
+  $("#failure").hide();
   
   $('#search').click(function() {
     if (window.confirm("Are you sure to update the database?")) {
@@ -24,7 +25,7 @@ $(function() {
       $("#result").text("Scanning logfiles....");
 
 
-      $.ajax('test1.php',
+      $.ajax('migrate.php',
         {
           type: 'get',
           data: '',
@@ -36,15 +37,18 @@ $(function() {
       .done(function(data) {
         $("#loading").hide();
         $("#result").text(data);
-        $("#alert").show();
+        if (~data.indexOf('Success')) {
+          $("#success").show();
+        } else {
+          $("#failure").show();
+        }
       })
       // 検索失敗時には、その旨をダイアログ表示
       .fail(function(data) {
         $("#loading").hide();
         $("#result").text(data);
-        window.confirm("Error!");
+        $("#failure").show();
       });
-
     }
   });
 });
@@ -57,11 +61,11 @@ $(function() {
 <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
 <span class="navbar-toggler-icon"></span>
 </button>
-<a class="navbar-brand" href="#">Download Counter</a>
+<a class="navbar-brand" href="#">SALMON Counter [Beta]</a>
 <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
 <div class="navbar-nav">
 <a class="nav-item nav-link active" href="#">Top</a>
-<a class="nav-item nav-link active" href="summary.php">Summary</a>
+<a class="nav-item nav-link " href="summary.php">Summary</a>
 <a class="nav-item nav-link" href="query.php">Query</a>
 <a class="nav-item nav-link disabled" href="#">Admin</a>
 </div>
@@ -73,31 +77,68 @@ $(function() {
       <div class="col col-sm-1"></div>
       
       <div class="col col-sm-10">
-        <p><h3>Download counter for SALMON-TDDFT</h3></p>
+        <p><h3>Overview</h3></p>
         
+        <ul>
+          <li>
+            This program provides the download count of the source code archive from 
+            <a href="http://salmon-tddft.jp/">SALMON-TDDFT</a> website.
+            For the counting, the subject files must be placed under 
+            <code>~salmon/htdocs/download</code> directory.
+          </li>
+          <li>
+            This program uses the database which is generated from the access log of Apache.
+            Please click <mark>"Update Database"</mark> button frequently to reflect the recent access-logs to temporary database.
+            The update sometimes costs a few minuites.
+          </li>
+          <li>
+            Please contact <a href="mailto:uemoto@ccs.tsukuba.ac.jp">
+            uemoto@ccs.tsukuba.ac.jp</a>, if you find bugs.
+          </li>
+          
+        </ul>
         
-        <div class="card"><div class="card-block">
-          
-          <p>
-          <strong> This process sometimes costs a few minuites </strong>
-          </p>
-          <button class="btn btn-info" id="search">
-            Update Database
-          </button>
-          
-          <img src="loading.gif" id="loading"/>
-          <div class="alert alert-success" role="alert" id="alert">
-            <strong>Success!</strong> Update is successfully finished!
-          </div>
-          
-          <br/>
-          <pre id="result"></pre>
-        </div></div>
+        <p>
+        
+        <a href="summary.php" class="btn btn-primary btn-lg">Check download summary</a>
+        <a href="query.php" class="btn btn-primary btn-lg">Check download log</a>
+        
+        </p>
+        
+        <br/>
+      
+        
+        <div class="card">
+        <div class="card-block">
+        <h4 class="card-title">Data migration</h4>
+        <p class="card-text">
+          Load the recent apache's access logs into the temporary databese.
+        </p>
+        <button class="btn btn-danger" id="search">
+          Update Database
+        </button>
+        
+        <div class="alert alert-success" role="alert" id="success">
+          <strong>Success!</strong> Update finished successful. 
+        </div>
+        <div class="alert alert-warning" role="alert" id="failure">
+          <strong>Failure!</strong> Something happend.
+        </div>
+
+    
+        <br/>
+        <pre id="result"></pre>
+        <img src="loading.gif" id="loading"/>
+      
+        </div>
+        </div>
         
       </div>
       
       <div class="col col-sm-1"></div>
     </div>
 </div>
+
+<br/><br/><br/>
 </body>
 </html>

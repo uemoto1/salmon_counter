@@ -1,5 +1,5 @@
 <?php
-$DBFILE = "./download_count.sqlite";
+$DBFILE = "data/database.sqlite";
 
 $db = new PDO("sqlite:$DBFILE");
 $db->setAttribute(PDO::ATTR_EMULATE_PREPARES, PDO::FETCH_ASSOC);
@@ -13,7 +13,7 @@ $db->setAttribute(PDO::ATTR_EMULATE_PREPARES, PDO::FETCH_ASSOC);
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Download Count</title>
+<title>Total downloads</title>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
 </head>
@@ -24,7 +24,7 @@ $db->setAttribute(PDO::ATTR_EMULATE_PREPARES, PDO::FETCH_ASSOC);
 <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
 <span class="navbar-toggler-icon"></span>
 </button>
-<a class="navbar-brand" href="#">Download Counter</a>
+<a class="navbar-brand" href="#">SALMON Counter [Beta]</a>
 <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
 <div class="navbar-nav">
 <a class="nav-item nav-link" href="index.html">Top</a>
@@ -45,7 +45,7 @@ $db->setAttribute(PDO::ATTR_EMULATE_PREPARES, PDO::FETCH_ASSOC);
           <thead>
             <tr>
               <th>File title</th>
-              <th>Download count</th>
+              <th>Total downloads</th>
               <th>First download</th>
               <th>Recent download</th>
             </tr>
@@ -75,7 +75,7 @@ $db->setAttribute(PDO::ATTR_EMULATE_PREPARES, PDO::FETCH_ASSOC);
           <thead>
             <tr>
               <th>Country</th>
-              <th>Download count</th>
+              <th>Total downloads</th>
               <th>First download</th>
               <th>Recent download</th>
             </tr>

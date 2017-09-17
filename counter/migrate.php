@@ -1,13 +1,7 @@
 <?php
-echo "Starting...\n";
 
-include_once("./geoip/geoipcity.inc");
-include_once("./geoip/timezone.php");
-$geoip = geoip_open("./geoip/GeoLiteCity.dat", GEOIP_STANDARD);
-
-
-$DBFILE = "./download_count.sqlite";
-$LOGDIR = "../log";
+$DBFILE = "data/database.sqlite";
+$LOGDIR = "../../../www/log";
 $PATTERN = "|^([0-9\.]+).*?\[([0-9a-zA-Z/]+):([0-9:]+).*?GET /download/(.+?) .*$|";
 
 $IGNORE = array(
@@ -16,6 +10,10 @@ $IGNORE = array(
   "salmon-v.0.0.1.tar.gz",
   "SALMON-v0.0.1.tar.gz"
 );
+
+include_once("geoip-api-php/src/geoipcity.inc");
+include_once("geoip-api-php/src/timezone.php");
+$geoip = geoip_open("data/GeoLiteCity.dat", GEOIP_STANDARD);
 
 $sql_create_db = <<< SQL
 CREATE TABLE IF NOT EXISTS LOGFILE (
@@ -65,7 +63,7 @@ $db->beginTransaction();
 # ログファイル一覧を取得
 echo "Scanning apache logs from $LOGDIR\n";
 $logfile_list = glob("$LOGDIR/*/*/salmon-access.log.*");
-$log_count = 0; # 読み込んだログ数カウント
+$ncount_logfile = 0; # 読み込んだログ数カウント
 foreach ($logfile_list as $logfile) {
     $mtime =  filemtime($logfile);
     if (array_key_exists($logfile, $prevous_log) && ($prevous_log[$logfile][0] == $mtime)) {
@@ -83,7 +81,7 @@ foreach ($logfile_list as $logfile) {
     $cur->bindValue(":xdate", $xdate, PDO::PARAM_STR);
     $cur->execute();
   
-    $dl_count = 0;
+    $ncount_dl = 0;
     $fp = fopen($logfile, "r");
     while ($line = fgets($fp)) {
         if (preg_match($PATTERN, $line, $result)) {
@@ -110,20 +108,20 @@ foreach ($logfile_list as $logfile) {
             $cur->bindValue(":city", $city, PDO::PARAM_STR);
             $cur->execute();
 
-            $dl_count++;
+            $ncount_dl++;
         }
     }
     fclose($fp);
     
-    echo "$logfile is updated and $dl_count downloads detected.\n";
-    $log_count++;
+    echo "$logfile is updated and $ncount_dl downloads detected.\n";
+    $ncount_logfile++;
 }
-echo "$log_count files are updated.\n";
+echo "$ncount_logfile files are updated.\n";
 
 echo "Updating Databese:$DBFILE...\n";
 $db->commit();
 
 
-echo "Done.\n";
+echo "Success\n";
 
 //geoip_close( $gi );

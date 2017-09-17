@@ -1,5 +1,5 @@
 <?php
-$DBFILE = "./download_count.sqlite";
+$DBFILE = "data/database.sqlite";
 
 $ni_per_page = 20;
 
@@ -66,7 +66,7 @@ $ii2 = ($page + 1) * $ni_per_page;
     <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
     </button>
-    <a class="navbar-brand" href="#">Download Counter</a>
+    <a class="navbar-brand" href="#">SALMON Counter [Beta]</a>
     <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
     <div class="navbar-nav">
     <a class="nav-item nav-link" href="index.html">Top</a>
