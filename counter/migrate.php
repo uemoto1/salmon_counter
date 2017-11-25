@@ -70,7 +70,11 @@ foreach ($logfile_list as $logfile) {
         continue;
     }
 
-    $xdate = pathinfo($logfile, PATHINFO_EXTENSION);
+    $yyyymmdd = pathinfo($logfile, PATHINFO_EXTENSION);
+    $yyyy = substr($yyyymmdd, 0, 4);
+    $mm = substr($yyyymmdd, 4, 2);
+    $dd = substr($yyyymmdd, 6, 2);
+    $xdate = "$yyyy/$mm/$dd";
   
     $cur = $db->prepare('INSERT OR REPLACE INTO LOGFILE(FILENAME, MTIME) VALUES(:filename, :mtime)');
     $cur->bindValue(":filename", $logfile, PDO::PARAM_STR);
