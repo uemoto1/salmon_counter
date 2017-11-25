@@ -2,7 +2,7 @@
 
 $DBFILE = "data/database.sqlite";
 $LOGDIR = "../../../www/log";
-$PATTERN = "|^([0-9\.]+).*?\[([0-9a-zA-Z/]+):([0-9:]+).*?GET /download/(.+?) .*$|";
+$PATTERN = "|^([0-9\.]+).*?\[([0-9a-zA-Z/]+):([0-9:]+).*?GET /download/(.+?) .*? 200 .*$|";
 
 $IGNORE = array(
   "example.bin",
